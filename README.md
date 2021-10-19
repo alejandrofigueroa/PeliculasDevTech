@@ -1,3 +1,19 @@
+Laravel v8.64.0 (PHP v8.0.8)
+XAMPP v3.3.0
+
+Pasos para configurar
+
+- Clonar el repositorio
+- Una vez clonado, descomprimir el archivo zip
+- Abrir cmd para luego ejecutar la siguiente sentencia: php artisan migrate:refresh --seed
+- Una vez en la pagina ya estará creado un usuario de tipo administrador con la sig credencial
+  correo: alefigueroa416@gmail.com contraseña: admi2021
+
+- Hacer las pruebas que vean convenientes y disculpas por lo entregado
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

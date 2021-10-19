@@ -38,6 +38,7 @@ class CategoriaController extends Controller
     public function create()
     {
         $categoria = new Categoria();
+
         return view('categoria.create', compact('categoria'));
     }
 
@@ -49,12 +50,19 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Categoria::$rules);
 
-        $categoria = Categoria::create($request->all());
+        $error_mensaje = [
+            'required' => 'El campo :attribute es requerido',
+        ];
+
+        request()->validate(Categoria::$rules, $error_mensaje);
+
+        $datosCategoria = request()->except('_token');
+
+        Categoria::create($datosCategoria);
 
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria created successfully.');
+            ->with('success', 'Categoria registrada correctamente');
     }
 
     /**
@@ -78,7 +86,7 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
 
         return view('categoria.edit', compact('categoria'));
     }
@@ -92,12 +100,17 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categoria $categoria)
     {
-        request()->validate(Categoria::$rules);
+        
+        $error_mensaje = [
+            'required' => 'El campo :attribute es requerido',
+        ];
+
+        request()->validate(Categoria::$rules, $error_mensaje);
 
         $categoria->update($request->all());
 
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria updated successfully');
+            ->with('success', 'Categoria actualizada correctamente');
     }
 
     /**
@@ -110,6 +123,6 @@ class CategoriaController extends Controller
         $categoria = Categoria::find($id)->delete();
 
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria deleted successfully');
+            ->with('success', 'La categoria fue eliminada sin problema');
     }
 }

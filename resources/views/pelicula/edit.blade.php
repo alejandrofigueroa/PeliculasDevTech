@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Update Pelicula
+    Actualizar Pelicula
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Update Pelicula</span>
+                        <span class="card-title">Actualizar pelicula: {{ $pelicula->titulo }}</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('peliculas.update', $pelicula->id) }}"  role="form" enctype="multipart/form-data">

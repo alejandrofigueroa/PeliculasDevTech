@@ -21,11 +21,11 @@ class Categoria extends Model
 {
     
     static $rules = [
-		'nombre_categoria' => 'required',
-		'descripcion_categoria' => 'required',
+		'nombre_categoria' => 'required|string',
+		'descripcion_categoria' => 'required|string|max:255',
     ];
 
-    protected $perPage = 20;
+    protected $perPage = 10;
 
     /**
      * Attributes that should be mass-assignable.

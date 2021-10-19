@@ -12,6 +12,15 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    static $rules = [
+		'usuario' => 'required|string|unique:users',
+		'email' => 'required|email|unique:users',
+        'telefono' => 'required|string',
+        'password' => 'required|min:8',
+    ];
+
+    protected $perPage = 20;
+
     //protected $table = 'usuarios';
     /**
      * The attributes that are mass assignable.
@@ -19,7 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var string[]
      */
     protected $fillable = [
-        'name', 'usuario', 'password', 'email', 'telefono', 'rol', 'estado_cuenta',
+        'name', 'usuario', 'password', 'email', 'telefono', 'rol', 'estado_cuenta', 'email_verified_at'
         //'name', 'email', 'password', 
     ];
 

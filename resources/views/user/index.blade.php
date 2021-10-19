@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    User
+    Usuario
 @endsection
 
 @section('content')
@@ -13,12 +13,15 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('User') }}
+                                {{ __('Tabla de Usuarios') }}
                             </span>
 
                              <div class="float-right">
+                                <a href="{{ route('usuario.pdf') }}" class="btn btn-dark btn-sm float-right"  data-placement="left">
+                                    {{ __('PDF de Usuarios') }}
+                                </a>
                                 <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear nuevo usuario') }}
                                 </a>
                               </div>
                         </div>
@@ -29,9 +32,15 @@
                         </div>
                     @endif
 
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                    @endif
+
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table id="tabla-usuario" class="table table-striped table-bordered table-hover" style="width:100%">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
@@ -40,7 +49,7 @@
 										<th>Email</th>
 										<th>Telefono</th>
 										<th>Rol</th>
-										<th>Estado Cuenta</th>
+										<th>Estado de la cuenta</th>
 
                                         <th></th>
                                     </tr>
@@ -54,15 +63,20 @@
 											<td>{{ $user->email }}</td>
 											<td>{{ $user->telefono }}</td>
 											<td>{{ $user->rol }}</td>
-											<td>{{ $user->estado_cuenta }}</td>
+                                            @if ($user->estado_cuenta == 0)
+                                                <td>Habilitado</td>    
+                                            @else 
+                                                <td>Inhabilitado</td>
+                                            @endif
+											
 
                                             <td>
                                                 <form action="{{ route('users.destroy',$user->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('users.show',$user->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('users.edit',$user->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('users.show',$user->id) }}"><i class="fa fa-fw fa-eye"></i> Detalles</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('users.edit',$user->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -76,4 +90,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#tabla-usuario').DataTable();
+        });
+    </script>
 @endsection

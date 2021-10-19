@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\DetalleUsuario;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Auth;
+use Carbon\Carbon;
 /**
  * Class UserController
  * @package App\Http\Controllers
@@ -23,7 +26,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate();
+        //se especifica que el usuario en sesion en caso de ser admin 
+        $users = User::where('id','!=',1)->where('id','!=', Auth::user()->id)->paginate();
 
         return view('user.index', compact('users'))
             ->with('i', (request()->input('page', 1) - 1) * $users->perPage());
@@ -49,11 +53,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         request()->validate(User::$rules);
+        //ENCRIPTANDO CONTRASEÑA Y UTILIZANDO CARBON PARA LA FECHA
+        $request['password'] = Hash::make($request['password']);
 
+        $request['email_verified_at'] = Carbon::now()->toDateTimeString();
+        
         $user = User::create($request->all());
 
         return redirect()->route('users.index')
-            ->with('success', 'User created successfully.');
+            ->with('success', 'Usuario creado con exito');
     }
 
     /**
@@ -93,10 +101,12 @@ class UserController extends Controller
     {
         request()->validate(User::$rules);
 
+        $request['password'] = Hash::make($request['password']);
+
         $user->update($request->all());
 
         return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
+            ->with('success', 'Usuario actualizado con exito');
     }
 
     /**
@@ -106,9 +116,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id)->delete();
+        $user = User::findOrFail($id);
+        
+        //evitar de que no se elimine al administrador general de la pagina
+        if($user->id == 1){
+            return redirect()->route('users.index')
+            ->with('error', 'No se puede eliminar este usuario');;
+        }
 
+        $user->delete();
         return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+            ->with('success', 'Usuario eliminado correctamente');
     }
 }

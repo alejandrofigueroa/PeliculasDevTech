@@ -38,7 +38,11 @@
                         </div>
                         <div class="form-group">
                             <strong>Estado Cuenta:</strong>
-                            {{ $user->estado_cuenta }}
+                            @if ($user->estado_cuenta == 0)
+                                <td>Habilitado</td>    
+                            @else 
+                                <td>Inhabilitado</td>
+                            @endif
                         </div>
 
                     </div>

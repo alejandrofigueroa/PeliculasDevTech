@@ -21,6 +21,10 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    Route::get('/email/verify', function (){
+        return view('auth.verify-email');
+    })->name('verification.notice');
 });
 
 
@@ -34,20 +38,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+    //PARA ADMINISTRADORES
     Route::resource('peliculas', App\Http\Controllers\PeliculaController::class);
-    Route::resource('usuarios', App\Http\Controllers\UserController::class);
+    Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('categorias', App\Http\Controllers\CategoriaController::class);
+    Route::resource('acciones', App\Http\Controllers\AccioneController::class);
+
+    Route::get('/pdf-users', [App\Http\Controllers\ReporteController::class, 'pdfUsers'])->name('usuario.pdf');
+    Route::get('/pdf-peliculas', [App\Http\Controllers\ReporteController::class, 'pdfPeliculas'])->name('pelicula.pdf');
+    Route::get('/pdf-acciones', [App\Http\Controllers\ReporteController::class, 'pdfAcciones'])->name('movimiento.pdf');
 
 });
 
-Route::get('/email/verify', function (){
-    return view('auth.verify-email');
-})->middleware(['auth','verified'])->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
 
-    return redirect('/home');
+    return redirect('/inicio');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {

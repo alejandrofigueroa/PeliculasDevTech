@@ -27,14 +27,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Pelicula extends Model
 {
-    
-    static $rules = [
-		'titulo' => 'required',
-		'fecha_estreno' => 'required',
-		'categoria_id' => 'required',
-		'disponible' => 'required',
-		'stock' => 'required',
-    ];
 
     protected $perPage = 20;
 

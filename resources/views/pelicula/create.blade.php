@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Create Pelicula
+    Crear Pelicula
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Create Pelicula</span>
+                        <span class="card-title">Crear una nueva pelicula</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('peliculas.store') }}"  role="form" enctype="multipart/form-data">

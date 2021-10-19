@@ -13,12 +13,15 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Pelicula') }}
+                                {{ __('Listado de Peliculas') }}
                             </span>
 
                              <div class="float-right">
+                                <a href="{{ route('pelicula.pdf') }}" class="btn btn-dark btn-sm float-right"  data-placement="left">
+                                    {{ __('PDF de Peliculas') }}
+                                </a>
                                 <a href="{{ route('peliculas.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                    {{ __('Nueva Pelicula') }}
                                 </a>
                               </div>
                         </div>
@@ -29,9 +32,15 @@
                         </div>
                     @endif
 
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                    @endif
+
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table id="tabla-pelicula" class="table table-striped table-bordered table-hover">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
@@ -39,13 +48,13 @@
 										<th>Titulo</th>
 										<th>Foto</th>
 										<th>Fecha Estreno</th>
-										<th>Categoria Id</th>
+										<th>Categoria</th>
 										<th>Disponible</th>
 										<th>Stock</th>
 										<th>Precio Renta</th>
 										<th>Precio Compra</th>
 
-                                        <th></th>
+                                        <th>Operaciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,21 +63,28 @@
                                             <td>{{ ++$i }}</td>
                                             
 											<td>{{ $pelicula->titulo }}</td>
-											<td>{{ $pelicula->foto }}</td>
-											<td>{{ $pelicula->fecha_estreno }}</td>
-											<td>{{ $pelicula->categoria_id }}</td>
-											<td>{{ $pelicula->disponible }}</td>
+											<td>
+                                                <img class="img-thumbnail img-fluid" src="{{ asset('storage').'/'.$pelicula->foto }}" width="100" alt="" />
+                                            </td>
+                                            <td>{{ $pelicula->fecha_estreno }}</td>
+											<td>{{ $pelicula->nombre_categoria }}</td>
+                                            @if ($pelicula->disponible == 0)
+                                                <td>Disponible</td>
+                                            @else
+                                                <td>No disponible</td>
+                                            @endif
+											
 											<td>{{ $pelicula->stock }}</td>
 											<td>{{ $pelicula->precio_renta }}</td>
 											<td>{{ $pelicula->precio_compra }}</td>
 
                                             <td>
                                                 <form action="{{ route('peliculas.destroy',$pelicula->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('peliculas.show',$pelicula->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('peliculas.edit',$pelicula->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('peliculas.show',$pelicula->id) }}"><i class="fa fa-fw fa-eye"></i> Detalles</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('peliculas.edit',$pelicula->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -82,4 +98,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#tabla-pelicula').DataTable();
+        });
+    </script>
 @endsection

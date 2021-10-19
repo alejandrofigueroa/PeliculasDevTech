@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ $pelicula->name ?? 'Show Pelicula' }}
+    {{ $pelicula->titulo }}
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Show Pelicula</span>
+                            <span class="card-title">Detalles pelicula</span>
                         </div>
                         <div class="float-right">
                             <a class="btn btn-primary" href="{{ route('peliculas.index') }}"> Back</a>
@@ -26,19 +26,23 @@
                         </div>
                         <div class="form-group">
                             <strong>Foto:</strong>
-                            {{ $pelicula->foto }}
+                            <img class="img-thumbnail img-fluid" src="{{ asset('storage').'/'.$pelicula->foto }}" width="100" alt="" />
                         </div>
                         <div class="form-group">
                             <strong>Fecha Estreno:</strong>
                             {{ $pelicula->fecha_estreno }}
                         </div>
                         <div class="form-group">
-                            <strong>Categoria Id:</strong>
-                            {{ $pelicula->categoria_id }}
+                            <strong>Categoria:</strong>
+                            {{ $pelicula->nombre_categoria }}
                         </div>
                         <div class="form-group">
                             <strong>Disponible:</strong>
-                            {{ $pelicula->disponible }}
+                            @if ($pelicula->disponible == 0)
+                                <td>Disponible</td>
+                            @else
+                                <td>No disponible</td>
+                            @endif
                         </div>
                         <div class="form-group">
                             <strong>Stock:</strong>

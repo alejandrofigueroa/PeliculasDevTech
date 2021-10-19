@@ -17,7 +17,7 @@ class CreatePeliculasTable extends Migration
             $table->id();
             $table->string('titulo')->unique();
             $table->string('foto')->nullable();
-            $table->string('fecha_estreno');
+            $table->date('fecha_estreno');
             $table->unsignedBigInteger('categoria_id');
             $table->integer('disponible');
             $table->integer('stock');

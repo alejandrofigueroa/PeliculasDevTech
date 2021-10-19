@@ -18,9 +18,9 @@ class CreateAccionesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('pelicula_id');
             $table->string('accion');
-            $table->time('fecha_transaccion');
-            $table->time('fecha_renta_final')->nullable();//fecha final prevista por la propia pagina para alquilarla 
-            $table->time('fecha_entrega')->nullable();//fecha cuando el usuario hace entrega de la pelicula alquilada
+            $table->date('fecha_transaccion');
+            $table->date('fecha_renta_final')->nullable();//fecha final prevista por la propia pagina para alquilarla 
+            $table->date('fecha_entrega')->nullable();//fecha cuando el usuario hace entrega de la pelicula alquilada
             $table->decimal('monto_pago', $precision = 8, $scale = 2);
             $table->timestamps();
 
